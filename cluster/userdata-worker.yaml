@@ -110,7 +110,6 @@ coreos:
         --cni-conf-dir=/etc/kubernetes/cni/net.d \
         --network-plugin=cni \
         --container-runtime=docker \
-        --rkt-path=/usr/bin/rkt \
         --register-node \
         --allow-privileged \
         --node-labels=kubernetes.io/role=worker \

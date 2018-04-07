@@ -137,7 +137,6 @@ coreos:
         --cni-conf-dir=/etc/kubernetes/cni/net.d \
         --network-plugin=cni \
         --container-runtime=docker \
-        --rkt-path=/usr/bin/rkt \
         --register-with-taints=node-role.kubernetes.io/master=:NoSchedule \
         --allow-privileged \
         --node-labels=node-role.kubernetes.io/master,kubernetes.io/role=master,master=true \
