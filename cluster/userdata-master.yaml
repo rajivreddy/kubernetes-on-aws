@@ -248,11 +248,10 @@ write_files:
           application: kube-apiserver
           version: v1.10.0_coreos.0
         annotations:
-          scheduler.alpha.kubernetes.io/critical-pod: ''
           kubernetes-log-watcher/scalyr-parser: |
             [{"container": "webhook", "parser": "json-structured-log"}]
       spec:
-        priorityClassName: critical
+        priorityClassName: system-node-critical
         tolerations:
         - key: node-role.kubernetes.io/master
           effect: NoSchedule
@@ -420,10 +419,8 @@ write_files:
         labels:
           application: kube-controller-manager
           version: v1.10.0_coreos.0
-        annotations:
-          scheduler.alpha.kubernetes.io/critical-pod: ''
       spec:
-        priorityClassName: critical
+        priorityClassName: system-node-critical
         tolerations:
         - key: node-role.kubernetes.io/master
           effect: NoSchedule
@@ -488,10 +485,8 @@ write_files:
         labels:
           application: kube-scheduler
           version: v1.10.0_coreos.0
-        annotations:
-          scheduler.alpha.kubernetes.io/critical-pod: ''
       spec:
-        priorityClassName: critical
+        priorityClassName: system-node-critical
         tolerations:
         - key: node-role.kubernetes.io/master
           effect: NoSchedule
