@@ -37,6 +37,11 @@ SenzaInfo:
           Description: "AWS Stack name of the etcd cluster"
           Default: "etcd-cluster-etcd"
 
+Mappings:
+  Images:
+    eu-central-1:
+      StableCoreOSImage: "ami-862140e9"
+
 SenzaComponents:
   - Configuration:
       Type: Senza::CoreosAutoConfiguration
@@ -67,7 +72,7 @@ SenzaComponents:
   - MasterAutoScaling:
       Type: Senza::AutoScalingGroup
       InstanceType: "{{ Arguments.MasterInstanceType }}"
-      Image: LatestCoreOSImage
+      Image: StableCoreOSImage
       BlockDeviceMappings:
         - DeviceName: /dev/xvda
           Ebs:
@@ -95,7 +100,7 @@ SenzaComponents:
   - WorkerAutoScaling:
       Type: Senza::AutoScalingGroup
       InstanceType: "{{ Arguments.InstanceType }}"
-      Image: LatestCoreOSImage
+      Image: StableCoreOSImage
       BlockDeviceMappings:
         - DeviceName: /dev/xvda
           Ebs:
@@ -123,6 +128,8 @@ SenzaComponents:
           Value: ""
         - Key: "zalando.de/cluster-local-id/{{SenzaInfo.StackName}}-{{SenzaInfo.StackVersion}}"
           Value: owned
+        - Key: "k8s.io/cluster-autoscaler/node-template/label/lifecycle-status"
+          Value: ready
 Resources:
   MasterIAMRole:
     Properties:
@@ -414,6 +421,8 @@ Resources:
       - {CidrIp: 172.31.0.0/16, FromPort: 10248, IpProtocol: tcp, ToPort: 10248}
       # allow checking kubelet cadvisor metrics port from within the VPC
       - {CidrIp: 172.31.0.0/16, FromPort: 4194, IpProtocol: tcp, ToPort: 4194}
+      # allow checking kubelet metrics for disk metrics port from within the VPC
+      - {CidrIp: 172.31.0.0/16, FromPort: 10255, IpProtocol: tcp, ToPort: 10255}
       # allow default service NodePort range
       - {CidrIp: 172.31.0.0/16, FromPort: 30000, IpProtocol: tcp, ToPort: 32767}
       Tags:
